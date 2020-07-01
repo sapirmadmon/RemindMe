@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:background="@color/button_background"
+            android:background="@drawable/button_shape"
             android:padding="@dimen/padding"
             android:text="@string/confirm_registration_text"
             android:textColor="@color/secondaryTextColor" />
