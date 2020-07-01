@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".LoginFragment">
+
+        <com.example.remindme.TypeWriter
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            app:lottie_fileName="welcome.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
+
+        <EditText
+            android:id="@+id/email_text_view"
+            android:layout_width="@dimen/edit_text_width"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/frame"
+            android:hint="@string/edit_text_email_hint"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/secondaryTextColor"
+            android:textColorHint="@color/secondaryTextColorTrans"
+            android:importantForAutofill="no" />
+
+        <EditText
+            android:id="@+id/password_text_view"
+            android:layout_width="@dimen/edit_text_width"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/frame"
+            android:hint="@string/edit_text_password_hint"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/secondaryTextColor"
+            android:textColorHint="@color/secondaryTextColorTrans"
+            android:importantForAutofill="no" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_button_text"
+                android:layout_marginEnd="10dp"
+                android:background="@color/button_background"
+                android:textColor="@color/secondaryTextColor"
+                style="?android:attr/buttonBarButtonStyle"
+                android:padding="@dimen/padding"/>
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/button_background"
+                android:text="@string/register_button_text"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textColor="@color/secondaryTextColor"
+                android:padding="@dimen/padding"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

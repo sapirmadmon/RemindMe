@@ -8,4 +8,33 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="EditTextCustom">
+        <item name="android:background">@drawable/frame</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColorHint">@color/secondaryTextColor</item>
+        <item name="android:layout_height">@dimen/edit_text_height</item>
+        <item name="android:layout_width">@dimen/edit_text_width</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="ListTextItem">
+        <item name="android:background">#99000000</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColorHint">@color/secondaryTextColor</item>
+        <item name="android:layout_height">@dimen/edit_text_height</item>
+        <item name="android:layout_width">@dimen/edit_text_width</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
