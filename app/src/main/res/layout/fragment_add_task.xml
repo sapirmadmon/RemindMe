@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_gravity="center_vertical|center_horizontal|center"
+    android:orientation="vertical"
+    android:background="#FFFF">
+
+
+    <ImageView
+        android:id="@+id/imageViewExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="@string/title_newTask"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="387dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/description_task_textView"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/frame"
+            android:hint="@string/description_task"
+            android:importantForAutofill="no"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/secondaryTextColor"
+            android:textColorHint="@color/secondaryTextColorTrans" />
+
+        <Switch
+            android:id="@+id/switchDate"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/switch_date" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDate"
+            android:layout_width="250dp"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textViewChooseDate"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:drawableTop="@drawable/ic_date_range_black_24dp"
+                android:gravity="center"
+                android:text="@string/textView_chooseDate" />
+
+            <TextView
+                android:id="@+id/textViewChooseTime"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_access_time_black_24dp"
+                android:gravity="center"
+                android:text="@string/textView_chooseTime" />
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switchLocation"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_location" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutLocation"
+            android:layout_width="250dp"
+            android:layout_height="62dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <AutoCompleteTextView
+                android:id="@+id/autocompleteLocation"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/completeTV_SearchLocation" />
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/SpinnerPriority"
+            android:layout_width="@dimen/edit_text_width"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginBottom="10dp"
+            android:autofillHints="@string/tab2_shared_task"
+            android:entries="@array/priority_spinner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="83dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/addTask_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_shape"
+                android:padding="@dimen/padding"
+                android:text="@string/btn_addTask"
+                android:textColor="@color/secondaryTextColor" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
