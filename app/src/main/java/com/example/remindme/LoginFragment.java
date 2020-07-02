@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +37,7 @@ public class LoginFragment extends Fragment {
         tw.setCharacterDelay(500);
         tw.animateText("RemindMe");
 
-        Button registerButton = view.findViewById(R.id.register_button);
+        TextView registerButton = view.findViewById(R.id.registration_button_link);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

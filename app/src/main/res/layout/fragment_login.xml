@@ -4,25 +4,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:fitsSystemWindows="true"
+    tools:context=".LoginFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".LoginFragment">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.example.remindme.TypeWriter
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50sp"/>
+            android:textSize="40sp"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             app:lottie_fileName="welcome.json"
             app:lottie_loop="true"
             app:lottie_autoPlay="true" />
@@ -55,33 +61,52 @@
             android:textColorHint="@color/secondaryTextColorTrans"
             android:importantForAutofill="no" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:text="@string/login_button_text"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/secondaryTextColor"
+            style="?android:attr/buttonBarButtonStyle"
+            android:padding="@dimen/padding"/>
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/login_button"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:id="@+id/register_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_button_text"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/button_shape"
-                android:textColor="@color/secondaryTextColor"
-                style="?android:attr/buttonBarButtonStyle"
-                android:padding="@dimen/padding"/>
-
-            <Button
-                android:id="@+id/register_button"
+                android:text="@string/don_t_have_a_user_text"
+                android:textSize="18sp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                />
+            <TextView
+                android:id="@+id/registration_button_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_shape"
-                android:text="@string/register_button_text"
-                style="?android:attr/buttonBarButtonStyle"
-                android:textColor="@color/secondaryTextColor"
-                android:padding="@dimen/padding"/>
-
+                android:textColor="@color/primaryColor"
+                android:textSize="18sp"
+                android:text="@string/registration_link_text"
+                />
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

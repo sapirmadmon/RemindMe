@@ -18,4 +18,9 @@
     <string name="confirm_registration_text">Confirm</string>
     <string name="username_text_hint">Username</string>
     <string name="confirm_password_text_hint">Confirm Password</string>
+    <string name="don_t_have_a_user_text">Don\'t have a user?</string>
+    <string name="registration_link_text">Click here</string>
+    <string name="choose_image_text_hint">Profile Image</string>
+    <string name="choose_image_button_text">Choose</string>
+    <string name="profile_image_desc">Profile Image</string>
 </resources>
