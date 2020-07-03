@@ -44,7 +44,7 @@ public class MainFragment extends Fragment {
 
        // fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
-        pageAdapter = new PageAdapter(getFragmentManager(), tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(getParentFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

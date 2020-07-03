@@ -15,11 +15,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
-        LoginFragment fragment = new LoginFragment();
-        fm.beginTransaction().add(R.id.login_fragment_container , fragment).commit();
+//        LoginFragment fragment = new LoginFragment();
+//        fm.beginTransaction().add(R.id.login_fragment_container , fragment).commit();
 
-//        MainFragment fragment = new MainFragment();
-//        fm.beginTransaction().add(R.id.main_fragment_container , fragment).commit();
+        MainFragment fragment = new MainFragment();
+        fm.beginTransaction().add(R.id.main_fragment_container , fragment).commit();
 
 
     }
