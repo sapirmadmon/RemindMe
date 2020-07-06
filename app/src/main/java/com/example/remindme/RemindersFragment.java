@@ -11,14 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
 
 
 /**
@@ -30,15 +26,19 @@ public class RemindersFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    //***for test***
-    private Task[] tasks = {new Task("task1", new Date("25/11/2020"), new Time(143000),"aaaaa", Priority.HIGH),
-                            new Task("task2", new Date("25/11/2020"), new Time(143000),"bbbbb", Priority.HIGH),
-                            new Task("task3", new Date("25/11/2020"), new Time(143000),"ccccc",  Priority.HIGH)};
 
+    //***for test***
+//    private Task[] tasks = {new Task("task1", new Date("25/11/2020"), new Time(143000),"aaaaa", Priority.HIGH),
+//                            new Task("task2", new Date("25/11/2020"), new Time(143000),"bbbbb", Priority.HIGH),
+//                            new Task("task3", new Date("25/11/2020"), new Time(143000),"ccccc",  Priority.HIGH)};
+
+    private ArrayList<UserTask> userTasks = new ArrayList<>();
 
     public RemindersFragment() {
         // Required empty public constructor
     }
+
+
 
 
     @Override
@@ -46,6 +46,11 @@ public class RemindersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
+
+
+      //  tasks.add(new Task("task1", new Date("25/11/2020"), new Time(143000),"aaaaa", Priority.HIGH));
+      //  tasks.add(new Task("task2", new Date("25/11/2020"), new Time(143000),"aaaaa", Priority.HIGH));
+      //  tasks.add(new Task("task3", new Date("25/11/2020"), new Time(143000),"aaaaa", Priority.HIGH));
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
@@ -56,8 +61,10 @@ public class RemindersFragment extends Fragment {
 //        layoutManager = new LinearLayoutManager(getActivity());
 //        recyclerView.setLayoutManager(layoutManager);
 
+
+
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(getActivity(), tasks);
+        mAdapter = new MyAdapter(userTasks, getActivity());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

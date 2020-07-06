@@ -14,6 +14,12 @@
         android:layout_height="0dp"
         android:layout_weight="0.15">
 
+        <ImageView
+            android:id="@+id/imageLogout"
+            android:layout_width="245dp"
+            android:layout_height="37dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_exit_to_app_black_24dp" />
     </LinearLayout>
 
 

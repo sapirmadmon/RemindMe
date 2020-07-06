@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,6 +37,7 @@ import java.util.Date;
  */
 public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSelectedListener {
 
+
     private Spinner spinnerPriority;
     private String priority;
     private Switch switchDate;
@@ -44,10 +48,15 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     private TextView tvDate;
     private TextView tvTimer;
     private int tHour, tMinute;
+    private String location;
+    private String description;
+
 
     public AddTaskFragment() {
         // Required empty public constructor
     }
+
+
 
     private  void switches(View view) {
         switchDate = (Switch) view.findViewById(R.id.switchDate);
@@ -182,23 +191,36 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_task, container, false);
+        final View view = inflater.inflate(R.layout.fragment_add_task, container, false);
 
         spinner(view);
         switches(view);
         chooseDate(view);
         chooseTime(view);
 
+        Button btnAddTask = (Button) view.findViewById(R.id.addTask_button);
+        btnAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+                //addTask(description, tvDate.getText().toString(), tvTimer.getText().toString(), location, Priority.valueOf(priority.toUpperCase()));
+                getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+            }
+        });
 
         ImageView imageExit = (ImageView) view.findViewById(R.id.imageViewExit);
         imageExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+                getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
             }
         });
 

@@ -110,7 +110,7 @@
         <Button
             android:id="@+id/registration_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:background="@drawable/button_shape"
             android:text="@string/confirm_registration_text"
             android:textColor="@color/secondaryTextColor" />

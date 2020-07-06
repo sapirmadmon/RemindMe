@@ -3,14 +3,14 @@ package com.example.remindme;
 import java.sql.Time;
 import java.util.Date;
 
-public class Task {
+public class UserTask {
     private String mDescription;
     private Date mDate;
     private Time mTime;
     private String mLocation;
     private Priority mPriority;
 
-    public Task(String mDescription, Date mDate, Time mTime, String mLocation, Priority mPriority) {
+    public UserTask(String mDescription, Date mDate, Time mTime, String mLocation, Priority mPriority) {
         this.mDescription = mDescription;
         this.mDate = mDate;
         this.mTime = mTime;

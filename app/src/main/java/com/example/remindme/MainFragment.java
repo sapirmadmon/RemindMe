@@ -1,5 +1,6 @@
 package com.example.remindme;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,10 +9,12 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /**
@@ -41,6 +44,17 @@ public class MainFragment extends Fragment {
         tab_privateTask = (TabItem) view.findViewById(R.id.tab1_privateTask);
         tab_sharedTask = (TabItem) view.findViewById(R.id.tab2_sharedTask);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+        ImageView logoutImageView = view.findViewById(R.id.imageLogout);
+        logoutImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+                startActivity(mainActivityIntent);
+
+            }
+        });
 
        // fab = (FloatingActionButton) view.findViewById(R.id.fab);
 

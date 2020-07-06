@@ -9,14 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private Task[] mTask;
+    private ArrayList<UserTask> mUserTask;
     private Context context;
 
-    public MyAdapter(Context context, Task[] task) {
+    public MyAdapter(ArrayList<UserTask> mUserTask, Context context) {
+        this.mUserTask = mUserTask;
         this.context = context;
-        this.mTask = task;
     }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -31,9 +34,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-       holder.text1.setText(mTask[position].getmDescription());
-       holder.text2.setText(mTask[position].getmDate().toString());
-       holder.text3.setText(mTask[position].getmLocation());
+       holder.text1.setText(mUserTask.get(position).getmDescription());
+       holder.text2.setText(mUserTask.get(position).getmDate().toString());
+       holder.text3.setText(mUserTask.get(position).getmLocation());
 
 
 
@@ -43,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mTask.length;
+        return mUserTask.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
