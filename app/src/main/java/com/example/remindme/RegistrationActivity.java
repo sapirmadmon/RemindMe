@@ -53,7 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void InitComponents() {
         TypeWriter tw = findViewById(R.id.title_typewriter);
         tw.setText("");
-        tw.setCharacterDelay(500);
+        tw.setCharacterDelay(250);
         tw.animateText("Registration");
 
         this.mUsername = findViewById(R.id.user_name_text_view);

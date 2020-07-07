@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         TypeWriter tw = view.findViewById(R.id.tv);
         tw.setText("");
-        tw.setCharacterDelay(500);
+        tw.setCharacterDelay(250);
         tw.animateText("RemindMe");
 
         TextView registerButton = view.findViewById(R.id.registration_button_link);
