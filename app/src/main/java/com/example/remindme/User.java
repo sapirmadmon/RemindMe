@@ -4,27 +4,31 @@ import android.net.Uri;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private String email;
-    private String password;
+    private String uId;
     private String userName;
-    private Uri avatar;
-    private Task[] tasks;
+    private String avatar;
+    private List<UserTask> tasks;
 
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String email, String userName, List<UserTask> tasks) {
         this.email = email;
-        this.password = password;
+        this.userName = userName;
+        this.tasks = tasks;
     }
 
-    public User(String email, String password, String userName,  Task[] tasks) {
+    public User(String email, String uId, String userName, String avatar, List<UserTask> tasks) {
         this.email = email;
-        this.password = password;
+        this.uId = uId;
         this.userName = userName;
-       // this.avatar = avatar;
+        this.avatar = avatar;
         this.tasks = tasks;
     }
 
@@ -36,12 +40,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getuId() {
+        return uId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setuId(String uId) {
+        this.uId = uId;
     }
 
     public String getUserName() {
@@ -52,19 +56,19 @@ public class User {
         this.userName = userName;
     }
 
-    public Uri getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Uri avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
-    public Task[] getTasks() {
+    public List<UserTask> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Task[] tasks) {
+    public void setTasks(List<UserTask> tasks) {
         this.tasks = tasks;
     }
 }

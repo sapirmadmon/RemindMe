@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +38,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -46,13 +55,12 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText mEmail;
     EditText mPassword;
     EditText mConfirmPassword;
-    EditText mProfileImage;
     ShapeableImageView imageView;
 
+    User user;
     Uri pickedImgUrl;
+    String avatarUrl;
 
-    private String email, password, confirmPassword, userName;
-    private User user;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
@@ -74,27 +82,6 @@ public class RegistrationActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
-    private void uploadImageToFirebase(Uri uri){
-
-         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference().child("users_avatars");
-         final StorageReference imageFilePath = mStorageRef.child(uri.getLastPathSegment());
-
-       // StorageReference fileRef = mStorageRef.child("images/rivers.jpg");
-        imageFilePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Log.d(TAG, "image uploaded");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "image failed");
-            }
-        });
-    }
-
-
     private void InitComponents() {
         TypeWriter tw = findViewById(R.id.title_typewriter);
         tw.setText("");
@@ -105,7 +92,6 @@ public class RegistrationActivity extends AppCompatActivity {
         this.mEmail = findViewById(R.id.email_register_text_view);
         this.mPassword = findViewById(R.id.password_text_view);
         this.mConfirmPassword = findViewById(R.id.confirm_password_text_view);
-        //this.mProfileImage = findViewById(R.id.choose_image_text_view);
         this.imageView = findViewById(R.id.image_view);
 
         Button chooseImage = findViewById(R.id.choose_image);
@@ -115,10 +101,10 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = mEmail.getText().toString();
-                password = mPassword.getText().toString();
-                confirmPassword = mConfirmPassword.getText().toString();
-                userName = mUsername.getText().toString();
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+                String confirmPassword = mConfirmPassword.getText().toString();
+                String userName = mUsername.getText().toString();
 
                 if(email.isEmpty() || userName.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please fill the form.", Toast.LENGTH_SHORT).show();
@@ -127,9 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (!password.equals(confirmPassword)) {
                         Toast.makeText(getApplicationContext() ,"Please make sure the password match.", Toast.LENGTH_SHORT).show();
                     } else {
-                        user = new User(email, password, userName, null);
                         //createUserAccount(email, password, userName);
-                        createUserAccount();
+                        createUserAccount(email, password, userName);
                     }
                 }
             }
@@ -137,18 +122,17 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void createUserAccount() {
+    private void createUserAccount(final String email, final String password, final String userName) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        user = new User(email, userName, new ArrayList<UserTask>());
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user); //update user
-                            //updateUI(pickedImgUrl, user); //update user info (+ avatar user)
-
+                            user.setuId(mAuth.getUid());
+                            uploadImageToFirebase(pickedImgUrl);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -161,16 +145,29 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void updateUI(final FirebaseUser currentUser) {
+    private void updateUI(final User currentUser) {
+        currentUser.setAvatar(avatarUrl);
+        mDatabase.child(currentUser.getuId()).setValue(currentUser);
 
-        String keyId = mDatabase.push().getKey();
-        mDatabase.child(keyId).setValue(user); //adding user info to database
-        uploadImageToFirebase(pickedImgUrl);
-
-
-//        Log.d("IMAGE URL", currentUser.getPhotoUrl().toString());
-        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        Intent mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mainActivityIntent);
+    }
+
+    private void uploadImageToFirebase(Uri uri)  {
+        String fileName = "users_avatars/"+uri.getLastPathSegment();
+        final StorageReference mStorageRef = FirebaseStorage.getInstance().getReference().child(fileName);
+        mStorageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        avatarUrl = uri.toString();
+                        updateUI(user);
+                    }
+                });
+            }
+        });
     }
 
     private View.OnClickListener getChoose_image_source() {
@@ -206,6 +203,13 @@ public class RegistrationActivity extends AppCompatActivity {
         };
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -215,8 +219,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
                         if (data.getExtras() != null) {
-                            pickedImgUrl = data.getData();
                             Bitmap bitmapImage = (Bitmap) data.getExtras().get("data");
+                            if (bitmapImage != null) {
+                                pickedImgUrl = getImageUri(getApplicationContext(), bitmapImage);
+                            }
                             this.imageView.setImageBitmap(bitmapImage);
                             float radius = getResources().getDimension(R.dimen.default_corner_radius);
                             imageView.setShapeAppearanceModel(shapeAppearanceModel
