@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -29,7 +28,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -73,31 +71,6 @@ public class RegistrationActivity extends AppCompatActivity {
         mDatabase = database.getReference(USERS);
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
-
-
-        Button registerButton = findViewById(R.id.registration_button);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                email = mEmail.getText().toString();
-                password = mPassword.getText().toString();
-                confirmPassword = mConfirmPassword.getText().toString();
-                userName = mUsername.getText().toString();
-
-                if(email.isEmpty() || userName.isEmpty() || password.isEmpty() || !(password.equals(confirmPassword))) {
-                    //TODO display error massage
-                }
-                else {
-                    user = new User(email, password, userName,null);
-                    //createUserAccount(email, password, userName);
-                    createUserAccount();
-                }
-            }
-        });
-
-
     }
 
     private void uploadImageToFirebase(Uri uri){
@@ -140,8 +113,22 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mPassword.getEditableText().equals(mConfirmPassword.getEditableText())) {
-                    Toast.makeText(getApplicationContext() ,"Please make sure the password match.", Toast.LENGTH_SHORT).show();
+                email = mEmail.getText().toString();
+                password = mPassword.getText().toString();
+                confirmPassword = mConfirmPassword.getText().toString();
+                userName = mUsername.getText().toString();
+
+                if(email.isEmpty() || userName.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill the form.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (!password.equals(confirmPassword)) {
+                        Toast.makeText(getApplicationContext() ,"Please make sure the password match.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        user = new User(email, password, userName,null);
+                        //createUserAccount(email, password, userName);
+                        createUserAccount();
+                    }
                 }
             }
         });
@@ -172,10 +159,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    //update user photo and userName
-    //private void updateUI(Uri pickedImgUrl, final FirebaseUser currentUser) {
-
-        private void updateUI(final FirebaseUser currentUser) {
+    private void updateUI(final FirebaseUser currentUser) {
 
         String keyId = mDatabase.push().getKey();
         mDatabase.child(keyId).setValue(user); //adding user info to database
@@ -183,37 +167,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
-
-//        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_avatars");
-//        final StorageReference imageFilePath = mStorage.child(pickedImgUrl.getLastPathSegment());
-//        imageFilePath.putFile(pickedImgUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                //image upload successfully
-//                imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        //uri contain user image url
-//
-//
-//
-//                        currentUser.updateProfile(profleUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                if(task.isSuccessful()) {
-//                                    Log.d(TAG, "register complete");
-//
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        });
-
-
-//        Intent loginIntent = new Intent(this, LoginFragment.class);
-//        startActivity(loginIntent);
     }
 
     private View.OnClickListener getChoose_image_source() {
@@ -258,6 +211,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
                         if (data.getExtras() != null) {
+                            pickedImgUrl = data.getData();
                             Bitmap bitmapImage = (Bitmap) data.getExtras().get("data");
                             this.imageView.setImageBitmap(bitmapImage);
                             float radius = getResources().getDimension(R.dimen.default_corner_radius);
