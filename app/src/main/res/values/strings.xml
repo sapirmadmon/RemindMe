@@ -23,4 +23,24 @@
     <string name="choose_image_text_hint">Profile Image</string>
     <string name="choose_image_button_text">Choose</string>
     <string name="profile_image_desc">Profile Image</string>
+
+    <string name="tab1_private_task">Private tasks</string>
+    <string name="tab2_shared_task">Shared tasks</string>
+    <string name="description_task">What should you remember?</string>
+    <string name="priority">priority</string>
+    <string name="switch_date">Set a reminder by date</string>
+    <string name="switch_location">Set a reminder by location</string>
+    <string name="textView_chooseDate">Select date</string>
+    <string name="textView_chooseTime">Select time</string>
+    <string name="completeTV_SearchLocation">Select Location</string>
+    <string name="title_newTask">New Task</string>
+    <string name="btn_addTask">add task</string>
+
+
+    <string-array name="priority_spinner">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+    </string-array>
+
 </resources>
