@@ -9,7 +9,7 @@ public class User {
     private String email;
     private String password;
     private String userName;
-    //private Uri avatar;
+    private Uri avatar;
     private Task[] tasks;
 
     public User() {
@@ -20,11 +20,11 @@ public class User {
         this.password = password;
     }
 
-    public User(String email, String password, String userName, Task[] tasks) {
+    public User(String email, String password, String userName,  Task[] tasks) {
         this.email = email;
         this.password = password;
         this.userName = userName;
-        //this.avatar = avatar;
+       // this.avatar = avatar;
         this.tasks = tasks;
     }
 
@@ -52,13 +52,13 @@ public class User {
         this.userName = userName;
     }
 
-//    public Uri getAvatar() {
-//        return avatar;
-//    }
-//
-//    public void setAvatar(Uri avatar) {
-//        this.avatar = avatar;
-//    }
+    public Uri getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Uri avatar) {
+        this.avatar = avatar;
+    }
 
     public Task[] getTasks() {
         return tasks;

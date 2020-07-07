@@ -28,6 +28,7 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -75,13 +76,14 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void uploadImageToFirebase(Uri uri){
 
-         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_avatars");
-         final StorageReference imageFilePath = mStorageRef.child(pickedImgUrl.getLastPathSegment());
+         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference().child("users_avatars");
+         final StorageReference imageFilePath = mStorageRef.child(uri.getLastPathSegment());
 
        // StorageReference fileRef = mStorageRef.child("images/rivers.jpg");
         imageFilePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                 Log.d(TAG, "image uploaded");
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -125,7 +127,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (!password.equals(confirmPassword)) {
                         Toast.makeText(getApplicationContext() ,"Please make sure the password match.", Toast.LENGTH_SHORT).show();
                     } else {
-                        user = new User(email, password, userName,null);
+                        user = new User(email, password, userName, null);
                         //createUserAccount(email, password, userName);
                         createUserAccount();
                     }
@@ -165,6 +167,8 @@ public class RegistrationActivity extends AppCompatActivity {
         mDatabase.child(keyId).setValue(user); //adding user info to database
         uploadImageToFirebase(pickedImgUrl);
 
+
+//        Log.d("IMAGE URL", currentUser.getPhotoUrl().toString());
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
     }
