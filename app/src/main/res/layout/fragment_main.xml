@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_weight="1"
-    android:id="@+id/container1"
-    tools:context=".MainFragment">
-
+    tools:context=".MainFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.15">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/container1">
 
-        <ImageView
-            android:id="@+id/imageLogout"
-            android:layout_width="245dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_exit_to_app_black_24dp" />
-    </LinearLayout>
-
-
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    android:layout_weight="0.85">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -57,10 +38,32 @@
             android:layout_marginTop="5dp">
 
         </androidx.viewpager.widget.ViewPager>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical">
 
-
-
-
-</LinearLayout>
-</LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/button_add_task"
+            android:src="@drawable/ic_add_black_24dp"
+            tools:ignore="MissingConstraints" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/button_add_task"
+            android:src="@drawable/ic_exit_to_app_black_24dp"
+            tools:ignore="MissingConstraints" />
+    </LinearLayout>
+</FrameLayout>

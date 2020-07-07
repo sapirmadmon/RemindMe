@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -45,7 +47,7 @@ public class MainFragment extends Fragment {
         tab_sharedTask = (TabItem) view.findViewById(R.id.tab2_sharedTask);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        ImageView logoutImageView = view.findViewById(R.id.imageLogout);
+        FloatingActionButton logoutImageView = (FloatingActionButton)view.findViewById(R.id.logout);
         logoutImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +84,17 @@ public class MainFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AddTaskFragment fragmentAddTask = new AddTaskFragment();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.add(R.id.container2 , fragmentAddTask).commit();
             }
         });
 
