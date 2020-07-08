@@ -30,6 +30,7 @@
                 app:shapeAppearanceOverlay="@style/roundedImageView"
                 android:contentDescription="@string/profile_image_desc" />
 
+
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout

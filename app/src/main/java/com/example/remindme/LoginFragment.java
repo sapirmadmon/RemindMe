@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
@@ -63,29 +64,29 @@ public class LoginFragment extends Fragment {
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
 
-                if(TextUtils.isEmpty(email)) {
-                    //TODO error message
-                }
-                if(TextUtils.isEmpty(password)) {
-                    //TODO error message
-                }
-                if(password.length() < 6) {
-                    //TODO error message
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(getContext(), "Please fill the form", Toast.LENGTH_SHORT).show();
                 }
 
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Log.d("LOGIN", "login successful");
-                            Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(mainActivityIntent);
+                if (password.length() < 6) {
+                    Toast.makeText(getContext(), "Password must contain at least 6 digits", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("LOGIN", "login successful");
+                                Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(mainActivityIntent);
+                            } else {
+                                Log.d("LOGIN", "login failed");
+                                Toast.makeText(getContext(), "The user doesn't exist in the system", Toast.LENGTH_SHORT).show();
+
+                            }
                         }
-                        else {
-                            Log.d("LOGIN", "login failed");
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
 
