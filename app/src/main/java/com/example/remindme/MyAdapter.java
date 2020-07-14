@@ -35,9 +35,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
        holder.text1.setText(mUserTask.get(position).getmDescription());
-       holder.text2.setText(mUserTask.get(position).getmDate().toString());
+       holder.text2.setText(mUserTask.get(position).getmDate());
        holder.text3.setText(mUserTask.get(position).getmLocation());
-
+       holder.text4.setText(mUserTask.get(position).getmTime());
 
 
     }
@@ -51,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView text1, text2, text3;
+        TextView text1, text2, text3, text4;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +59,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             text1 = itemView.findViewById(R.id.textView_description);
             text2 = itemView.findViewById(R.id.textView_date);
             text3 = itemView.findViewById(R.id.textView_location);
+            text4 = itemView.findViewById(R.id.textView_time);
         }
     }
 }

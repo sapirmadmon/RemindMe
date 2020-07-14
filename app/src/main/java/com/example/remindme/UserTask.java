@@ -5,12 +5,19 @@ import java.util.Date;
 
 public class UserTask {
     private String mDescription;
-    private Date mDate;
-    private Time mTime;
+    //private Date mDate;
+    private String mDate;
+    //private Time mTime;
+    private String mTime;
     private String mLocation;
-    private Priority mPriority;
+   // private Priority mPriority;
+   private String mPriority;
 
-    public UserTask(String mDescription, Date mDate, Time mTime, String mLocation, Priority mPriority) {
+   public UserTask () {
+   }
+
+
+    public UserTask(String mDescription, String mDate, String mTime, String mLocation, String mPriority) {
         this.mDescription = mDescription;
         this.mDate = mDate;
         this.mTime = mTime;
@@ -26,19 +33,19 @@ public class UserTask {
         this.mDescription = mDescription;
     }
 
-    public Date getmDate() {
+    public String getmDate() {
         return mDate;
     }
 
-    public void setmDate(Date mDate) {
+    public void setmDate(String mDate) {
         this.mDate = mDate;
     }
 
-    public Time getmTime() {
+    public String getmTime() {
         return mTime;
     }
 
-    public void setmTime(Time mTime) {
+    public void setmTime(String mTime) {
         this.mTime = mTime;
     }
 
@@ -50,11 +57,11 @@ public class UserTask {
         this.mLocation = mLocation;
     }
 
-    public Priority getmPriority() {
+    public String getmPriority() {
         return mPriority;
     }
 
-    public void setmPriority(Priority mPriority) {
+    public void setmPriority(String mPriority) {
         this.mPriority = mPriority;
     }
 }

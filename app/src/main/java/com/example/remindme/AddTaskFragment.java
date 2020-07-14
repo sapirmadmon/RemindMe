@@ -2,10 +2,12 @@ package com.example.remindme;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,24 +20,49 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSelectedListener {
+
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabase;
+
+    private String TAG = "RegistrationActivity";
+    private static final String USERS = "users";
+
+    //private List<UserTask> tasks;
 
 
     private Spinner spinnerPriority;
@@ -50,6 +77,8 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     private int tHour, tMinute;
     private String location;
     private String description;
+  //  private Priority priorityEnum = null;
+    private UserTask newTask;
 
 
     public AddTaskFragment() {
@@ -140,7 +169,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month = month+1;
-                String date = day+"/"+month+"/"+year;
+                String date = day+"/"+ month +"/"+year;
                 tvDate.setText(date);
             }
         };
@@ -169,8 +198,8 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                                 SimpleDateFormat f24Hours = new SimpleDateFormat("HH:mm");
 
                                 try {
-                                   Date date = f24Hours.parse(time);
-                                   //init 12 hours time format
+                                    Date date = f24Hours.parse(time);
+                                    //init 12 hours time format
                                     SimpleDateFormat f12Hours = new SimpleDateFormat("hh:mm aa");
                                     //set selected time on textview
                                     tvTimer.setText(f12Hours.format(date));
@@ -178,8 +207,8 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                                     e.printStackTrace();
                                 }
                             }
-                        },12, 0, false
-                );
+                        },12, 0, false);
+
                 //set transparent background
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 //display previous selected time
@@ -192,11 +221,18 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
 
 
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_add_task, container, false);
+
+        database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference(USERS);
+
 
         spinner(view);
         switches(view);
@@ -207,11 +243,25 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //tasks = new ArrayList<UserTask>();
+
+                description = ((EditText) view.findViewById(R.id.description_task_textView)).getText().toString();
+                location = ((AutoCompleteTextView)view.findViewById(R.id.autocompleteLocation)).getText().toString();
+                String date = tvDate.getText().toString();
+                String time = tvTimer.getText().toString();
+
+                newTask = new UserTask(description, date, time, location, priority); //create new task
+
+
+                String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String key  = mDatabase.child(userKey).child("tasks").push().getKey();
+
+                Map<String, Object> map = new HashMap<>();
+                map.put(key, newTask);
+                mDatabase.child(userKey).child("tasks").updateChildren(map);
 
 
 
-
-                //addTask(description, tvDate.getText().toString(), tvTimer.getText().toString(), location, Priority.valueOf(priority.toUpperCase()));
                 getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
             }
         });
@@ -230,6 +280,14 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         priority = parent.getItemAtPosition(position).toString();
+
+//        if(priority.equals(Priority.HIGH.name()))
+//            priorityEnum = Priority.HIGH;
+//        else if(priority.equals(Priority.MEDIUM.name()))
+//            priorityEnum = Priority.MEDIUM;
+//        else if(priority.equals(Priority.LOW.name()))
+//            priorityEnum = Priority.LOW;
+
         Log.d("PRIORITY_SPINNER" , priority);
     }
 

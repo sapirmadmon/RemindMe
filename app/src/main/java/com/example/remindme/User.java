@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
@@ -13,18 +14,18 @@ public class User {
     private String uId;
     private String userName;
     private String avatar;
-    private List<UserTask> tasks;
+    private Map<String, UserTask> tasks;
 
     public User() {
     }
 
-    public User(String email, String userName, List<UserTask> tasks) {
+    public User(String email, String userName, Map<String, UserTask> tasks) {
         this.email = email;
         this.userName = userName;
         this.tasks = tasks;
     }
 
-    public User(String email, String uId, String userName, String avatar, List<UserTask> tasks) {
+    public User(String email, String uId, String userName, String avatar, Map<String, UserTask> tasks) {
         this.email = email;
         this.uId = uId;
         this.userName = userName;
@@ -64,11 +65,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public List<UserTask> getTasks() {
+    public Map<String, UserTask> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<UserTask> tasks) {
+    public void setTasks(Map<String, UserTask> tasks) {
         this.tasks = tasks;
     }
 }
