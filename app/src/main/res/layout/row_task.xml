@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:layout_width="match_parent"
@@ -17,11 +18,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:weightSum="1"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="292dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:layout_marginLeft="3dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -42,8 +46,8 @@
                         android:id="@+id/textView_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="null"
                         android:layout_marginRight="5dp"
+                        android:text="null"
                         tools:layout_editor_absoluteX="176dp"
                         tools:layout_editor_absoluteY="27dp" />
 
@@ -51,8 +55,8 @@
                         android:id="@+id/textView_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="null"
                         android:layout_marginRight="15dp"
+                        android:text="null"
                         tools:layout_editor_absoluteX="176dp"
                         tools:layout_editor_absoluteY="27dp" />
 
@@ -69,14 +73,30 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView_priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_priority_high_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
                 android:orientation="vertical">
 
                 <CheckBox
                     android:id="@+id/checkboxIfDone"
-                    android:layout_width="69dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:gravity="center" />
 

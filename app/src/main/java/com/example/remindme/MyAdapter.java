@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
        holder.text3.setText(mUserTask.get(position).getmLocation());
        holder.text4.setText(mUserTask.get(position).getmTime());
 
+       if(mUserTask.get(position).getmPriority().equals("High")) {
+           holder.priorityImage.setVisibility(View.VISIBLE);
+        }
+       else holder.priorityImage.setVisibility(View.GONE);
+
 
     }
 
@@ -52,6 +59,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView text1, text2, text3, text4;
+        ImageView priorityImage;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +68,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             text2 = itemView.findViewById(R.id.textView_date);
             text3 = itemView.findViewById(R.id.textView_location);
             text4 = itemView.findViewById(R.id.textView_time);
+
+            priorityImage = itemView.findViewById(R.id.imageView_priority);
         }
     }
 }
