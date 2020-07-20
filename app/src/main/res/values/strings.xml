@@ -24,6 +24,9 @@
     <string name="choose_image_button_text">Choose</string>
     <string name="profile_image_desc">Profile Image</string>
 
+    <string name="already_registered_text">Already registered?</string>
+    <string name="login_link_text">Login here!</string>
+
     <string name="tab1_private_task">Private tasks</string>
     <string name="tab2_shared_task">Shared tasks</string>
     <string name="description_task">What should you remember?</string>

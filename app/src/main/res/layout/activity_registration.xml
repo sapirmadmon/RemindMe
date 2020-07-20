@@ -8,30 +8,35 @@
     android:fitsSystemWindows="true"
     tools:context=".RegistrationActivity">
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingBottom="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.336">
 
         <com.example.remindme.TypeWriter
             android:id="@+id/title_typewriter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="casual"
             android:gravity="center"
-            android:textSize="40sp"
             android:paddingBottom="10dp"
-            />
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/user_name_text_view"
             android:layout_width="@dimen/edit_text_width"
-            android:layout_height="@dimen/edit_text_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/frame"
             android:hint="@string/username_text_hint"
@@ -45,7 +50,7 @@
         <EditText
             android:id="@+id/email_register_text_view"
             android:layout_width="@dimen/edit_text_width"
-            android:layout_height="@dimen/edit_text_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/frame"
             android:hint="@string/edit_text_email_hint"
@@ -59,7 +64,7 @@
         <EditText
             android:id="@+id/password_text_view"
             android:layout_width="@dimen/edit_text_width"
-            android:layout_height="@dimen/edit_text_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/frame"
             android:hint="@string/edit_text_password_hint"
@@ -73,7 +78,7 @@
         <EditText
             android:id="@+id/confirm_password_text_view"
             android:layout_width="@dimen/edit_text_width"
-            android:layout_height="@dimen/edit_text_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/frame"
             android:hint="@string/confirm_password_text_hint"
@@ -87,32 +92,72 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginBottom="15dp"
+            android:gravity="center"
             android:orientation="horizontal">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_view"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="89dp"
+                android:layout_height="89dp"
                 android:layout_marginStart="10dp"
-                app:srcCompat="@drawable/profile"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/profile_image_desc"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
-                android:contentDescription="@string/profile_image_desc" />
+                app:srcCompat="@drawable/profile" />
+
             <Button
                 android:id="@+id/choose_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="102dp"
+                android:layout_height="37dp"
                 android:background="@drawable/button_shape"
-                android:text="@string/choose_image_button_text"/>
+                android:text="@string/choose_image_button_text" />
         </LinearLayout>
 
         <Button
             android:id="@+id/registration_button"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/button_shape"
             android:text="@string/confirm_registration_text"
             android:textColor="@color/secondaryTextColor" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:id="@+id/register_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/already_registered_text"
+                android:textSize="18sp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                />
+            <TextView
+                android:id="@+id/login_button_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryColor"
+                android:textSize="18sp"
+                android:text="@string/login_link_text"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

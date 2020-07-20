@@ -1,5 +1,7 @@
 package com.example.remindme;
 
+import android.util.Log;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -24,6 +26,8 @@ public class UserTask {
         this.mLocation = mLocation;
         this.mPriority = mPriority;
     }
+
+
 
     public String getmDescription() {
         return mDescription;

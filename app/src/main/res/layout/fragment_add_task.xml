@@ -4,23 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="20dp"
+    android:layout_height="match_parent"
     android:layout_gravity="center_vertical|center_horizontal|center"
+
     android:orientation="vertical"
     android:background="#FFFF">
-
 
 
     <ImageView
         android:id="@+id/imageViewExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_close_black_24dp"/>
+        android:layout_gravity="start"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
         android:gravity="center">
 
@@ -45,28 +46,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="387dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
         <EditText
             android:id="@+id/description_task_textView"
             android:layout_width="250dp"
             android:layout_height="70dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/frame"
             android:hint="@string/description_task"
             android:importantForAutofill="no"
-            android:padding="10dp"
             android:textAlignment="viewStart"
             android:textColor="@color/secondaryTextColor"
             android:textColorHint="@color/secondaryTextColorTrans" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
 
         <Switch
             android:id="@+id/switchDate"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/switch_date" />
 
@@ -101,6 +110,7 @@
             android:id="@+id/switchLocation"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/switch_location" />
 
         <LinearLayout
@@ -124,26 +134,55 @@
             android:id="@+id/SpinnerPriority"
             android:layout_width="@dimen/edit_text_width"
             android:layout_height="@dimen/edit_text_height"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:autofillHints="@string/tab2_shared_task"
             android:entries="@array/priority_spinner" />
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="83dp"-->
-<!--            android:gravity="center">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="83dp"-->
+        <!--            android:gravity="center">-->
 
-            <Button
-                android:id="@+id/addTask_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_shape"
-                android:text="@string/btn_addTask"
-                android:textColor="@color/secondaryTextColor" />
 
-<!--        </LinearLayout>-->
+
+
+        <!--        </LinearLayout>-->
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+        android:id="@+id/addTask_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/button_shape"
+        android:text="@string/btn_addTask"
+        android:textColor="@color/secondaryTextColor" />
+
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:padding="20dp"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fab_shareTask"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/primaryDarkColor"-->
+<!--            android:src="@drawable/ic_baseline_share_24"-->
+<!--            tools:ignore="MissingConstraints" />-->
+
+<!--    </LinearLayout>-->
 
 </LinearLayout>

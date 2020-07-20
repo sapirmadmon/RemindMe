@@ -8,6 +8,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -60,15 +61,17 @@
                         tools:layout_editor_absoluteX="176dp"
                         tools:layout_editor_absoluteY="27dp" />
 
-                    <TextView
-                        android:id="@+id/textView_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="null"
-                        tools:layout_editor_absoluteX="176dp"
-                        tools:layout_editor_absoluteY="54dp" />
+
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="null"
+                    tools:layout_editor_absoluteX="176dp"
+                    tools:layout_editor_absoluteY="54dp" />
 
             </LinearLayout>
 

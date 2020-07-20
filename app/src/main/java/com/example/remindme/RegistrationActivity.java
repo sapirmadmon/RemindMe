@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Result;
@@ -81,6 +82,17 @@ public class RegistrationActivity extends AppCompatActivity {
         mDatabase = database.getReference(USERS);
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
+        TextView loginButton = findViewById(R.id.login_button_link);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(mainActivityIntent);
+            }
+        });
+
     }
 
     private void InitComponents() {
