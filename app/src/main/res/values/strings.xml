@@ -35,6 +35,8 @@
     <string name="completeTV_SearchLocation">Select Location</string>
     <string name="title_newTask">New Task</string>
     <string name="btn_addTask">add task</string>
+    <string name="RemindMeChannelName">RemindMeNotifications</string>
+    <string name="channel_description">Remind me local notifications</string>
 
 
     <string-array name="priority_spinner">

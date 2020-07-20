@@ -1,13 +1,21 @@
 package com.example.remindme;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -40,15 +48,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -59,6 +72,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
 
+    private static final String CHANNEL_ID = "RemindMe";
     private String TAG = "RegistrationActivity";
     private static final String USERS = "users";
 
@@ -179,6 +193,11 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     private void chooseTime(View view) {
         tvTimer = (TextView) view.findViewById(R.id.textViewChooseTime);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        final int hour = calendar.get(Calendar.HOUR);
+        final int min = calendar.get(Calendar.MINUTE);
+
         tvTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +226,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                                     e.printStackTrace();
                                 }
                             }
-                        },12, 0, false);
+                        },hour, min, false);
 
                 //set transparent background
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -251,7 +270,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                 String time = tvTimer.getText().toString();
 
                 newTask = new UserTask(description, date, time, location, priority); //create new task
-
+                setNewNotification();
 
                 String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String key  = mDatabase.child(userKey).child("tasks").push().getKey();
@@ -275,6 +294,65 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
         });
 
         return view;
+    }
+
+    private void setNewNotification() {
+        if (newTask != null) {
+            int prio = NotificationCompat.PRIORITY_DEFAULT;
+
+            switch (newTask.getmPriority()){
+                case "High":
+                    prio = NotificationCompat.PRIORITY_HIGH;
+                    break;
+                case "Medium":
+                    prio = NotificationCompat.PRIORITY_DEFAULT;
+                    break;
+                case "Low":
+                    prio = NotificationCompat.PRIORITY_LOW;
+                    break;
+            }
+
+            SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String dateStr = newTask.getmDate()+ " " + newTask.getmTime();
+            Date date = null;
+            try {
+                date = f24Hours.parse(dateStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (getActivity() != null &&  date != null) {
+                int notificationId = Sequence.nextValue();
+                Intent intent = new Intent(this.getContext(), MainActivity.class);
+                PendingIntent activity = PendingIntent.getActivity(this.getContext(), notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                long timeMillis = calendar.getTimeInMillis();
+                if (timeMillis - System.currentTimeMillis() < 0)
+                    timeMillis = System.currentTimeMillis();
+                else {
+                    timeMillis = timeMillis - System.currentTimeMillis();
+                }
+                Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_date_range_black_24dp)
+                        .setContentIntent(activity)
+                        .setContentTitle(newTask.getmDescription())
+                        .setAutoCancel(true)
+                        .setContentText(newTask.getmDescription())
+                        .setPriority(prio)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .build();
+
+                Intent notificationIntent = new Intent(this.getContext(), MyNotificationPublisher.class);
+                notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId);
+                notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getContext(), notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                if (alarmManager != null)
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, timeMillis, pendingIntent);
+            }
+        }
     }
 
     @Override
