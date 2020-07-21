@@ -3,6 +3,7 @@ package com.example.remindme;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -134,15 +137,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
 
+
     //Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-       holder.text1.setText(mUserTask.get(position).getmDescription());
-       holder.text2.setText(mUserTask.get(position).getmDate());
-       holder.text3.setText(mUserTask.get(position).getmLocation());
-       holder.text4.setText(mUserTask.get(position).getmTime());
+
+       final String desc = mUserTask.get(position).getmDescription();
+       final String date = mUserTask.get(position).getmDate();
+       final String location = mUserTask.get(position).getmLocation();
+       final String time = mUserTask.get(position).getmTime();
+       final String priority = mUserTask.get(position).getmPriority();
+       final Boolean ifShared = mUserTask.get(position).getmIsShared();
+
+       holder.text1.setText(desc);
+       holder.text2.setText(date);
+       holder.text3.setText(location);
+       holder.text4.setText(time);
 
 
        if(mUserTask.get(position).getmPriority().equals("High")) {
@@ -152,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(final View v) {
 
                 PopupMenu popup = new PopupMenu(context, holder.cardView);
                 popup.inflate(R.menu.popup_menu_task);
@@ -170,8 +182,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                             case R.id.menuEdit:
                                 Log.d("UPDATE", "click on update");
 
-                                break;
+                                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                                Fragment fragmentAddTask = new AddTaskFragment();
 
+                                Bundle args = new Bundle();
+                                args.putString("mDescription", desc);
+                                args.putString("mDate", date);
+                                args.putString("mLocation", location);
+                                args.putString("mPriority", priority);
+                                args.putString("mTime", time);
+                                args.putBoolean("mIsShared", ifShared);
+                                fragmentAddTask.setArguments(args);
+
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container2, fragmentAddTask).addToBackStack(null).commit();
+
+                                break;
                         }
                         return false;
                     }

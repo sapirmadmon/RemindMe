@@ -45,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
@@ -77,25 +78,39 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
     private String TAG = "RegistrationActivity";
     private static final String USERS = "users";
 
-    //private List<UserTask> tasks;
-
-
-    private Spinner spinnerPriority;
-    private String priority;
     private Switch switchDate;
     private Switch switchLocation;
     private LinearLayout linearLayoutOfDate;
     private LinearLayout linearLayoutOfLocation;
     private DatePickerDialog.OnDateSetListener setListener;
-    private TextView tvDate;
-    private TextView tvTimer;
+
     private int tHour, tMinute;
     private String location;
     private String description;
-  //  private Priority priorityEnum = null;
+    private String date;
+    private String time;
+    private String priority;
+
+    private Spinner spinnerPriority;
+    private EditText et_description;
+    private EditText et_location;
+    private TextView tvDate;
+    private TextView tvTimer;
+
     private UserTask newTask;
 
+    private String cDesc, cLocation, cDate, cTime, cPriority;
+    private Boolean cIfShared;
 
+
+    private String[] Priorities = new String[]{
+            "Choose Priority",
+            "High",
+            "Medium",
+            "Low",
+    };
+
+    private ArrayAdapter<String> spinnerArrayAdapter;
     public AddTaskFragment() {
         // Required empty public constructor
     }
@@ -137,32 +152,16 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
         });
     }
 
-    private void spinner(View view) {
+    private void spinner() {
 
-        String[] priority = new String[]{
-                "Choose Priority",
-                "High",
-                "Medium",
-                "Low",
-        };
-
-        spinnerPriority = (Spinner) view.findViewById(R.id.SpinnerPriority);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
-//                R.array.priority_spinner, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerPriority.setAdapter(adapter);
-//        spinnerPriority.setOnItemSelectedListener(this);
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this.getActivity(), R.layout.spinner_item,priority);
+        spinnerArrayAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_item,Priorities);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerPriority.setAdapter(spinnerArrayAdapter);
         spinnerPriority.setOnItemSelectedListener(this);
 
     }
 
-    private void chooseDate(View view) {
-        tvDate = (TextView) view.findViewById(R.id.textViewChooseDate);
+    private void chooseDate() {
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -191,8 +190,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
 
     }
 
-    private void chooseTime(View view) {
-        tvTimer = (TextView) view.findViewById(R.id.textViewChooseTime);
+    private void chooseTime() {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -253,36 +251,71 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USERS);
 
+        tvDate = (TextView) view.findViewById(R.id.textViewChooseDate);
+        tvTimer = (TextView) view.findViewById(R.id.textViewChooseTime);
+        et_description = (EditText) view.findViewById(R.id.description_task_textView);
+        et_location = (AutoCompleteTextView)view.findViewById(R.id.autocompleteLocation);
+        spinnerPriority = (Spinner) view.findViewById(R.id.SpinnerPriority);
 
-        spinner(view);
+        final Button btnAddTask = (Button) view.findViewById(R.id.addTask_button);
+        TextView tvTitle = (TextView) view.findViewById(R.id.title_task);
+
+        spinner();
         switches(view);
-        chooseDate(view);
-        chooseTime(view);
+        chooseDate();
+        chooseTime();
 
-        Button btnAddTask = (Button) view.findViewById(R.id.addTask_button);
+        Bundle arg = getArguments();
+        if(arg != null) {
+
+            cDesc = getArguments().getString("mDescription");
+            cDate = getArguments().getString("mDate");
+            cTime = getArguments().getString("mTime");
+            cLocation = getArguments().getString("mLocation");
+            cPriority = getArguments().getString("mPriority");
+            cIfShared = getArguments().getBoolean("mIsShared");
+
+            //set this data to views
+            tvDate.setText(cDate);
+            tvTimer.setText(cTime);
+            et_description.setText(cDesc);
+            et_location.setText(cLocation);
+            int spinnerPosition = spinnerArrayAdapter.getPosition(cPriority);
+            spinnerPriority.setSelection(spinnerPosition);
+
+            btnAddTask.setText("Update");
+            tvTitle.setText("Edit Task");
+
+        }
+
+
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //tasks = new ArrayList<UserTask>();
 
-                description = ((EditText) view.findViewById(R.id.description_task_textView)).getText().toString();
-                location = ((AutoCompleteTextView)view.findViewById(R.id.autocompleteLocation)).getText().toString();
-                String date = tvDate.getText().toString();
-                String time = tvTimer.getText().toString();
+                if(btnAddTask.getText().equals("Update")) {
+                    updateTaskDatabase();
+                }
 
-                newTask = new UserTask(description, date, time, location, priority, false); //create new task
-                setNewNotification();
+                else {
+                    description = (et_description).getText().toString();
+                    location = (et_location).getText().toString();
+                    date = tvDate.getText().toString();
+                    time = tvTimer.getText().toString();
 
-                String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String key  = mDatabase.child(userKey).child("tasks").push().getKey();
+                    newTask = new UserTask(description, date, time, location, priority, false); //create new task
+                    setNewNotification();
 
-                Map<String, Object> map = new HashMap<>();
-                map.put(key, newTask);
-                mDatabase.child(userKey).child("tasks").updateChildren(map);
+                    String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String key = mDatabase.child(userKey).child("tasks").push().getKey();
 
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(key, newTask);
+                    mDatabase.child(userKey).child("tasks").updateChildren(map);
 
-
-                getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+                }
+                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
             }
         });
 
@@ -296,6 +329,42 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
 
         return view;
     }
+
+
+    private void updateTaskDatabase() {
+        description = (et_description).getText().toString();
+        location = (et_location).getText().toString();
+        date = tvDate.getText().toString();
+        time = tvTimer.getText().toString();
+
+        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference(USERS).child(userKey).child("tasks");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = mDatabase.orderByChild("mDescription").equalTo(cDesc);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+
+                    ds.getRef().child("mDescription").setValue(description);
+                    ds.getRef().child("mDate").setValue(date);
+                    ds.getRef().child("mTime").setValue(time);
+                    ds.getRef().child("mLocation").setValue(location);
+                    ds.getRef().child("mPriority").setValue(priority);
+                    ds.getRef().child("mIsShared").setValue(cIfShared);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+
+    }
+
 
     private void setNewNotification() {
         if (newTask != null) {
