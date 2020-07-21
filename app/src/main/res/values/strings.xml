@@ -27,6 +27,9 @@
     <string name="already_registered_text">Already registered?</string>
     <string name="login_link_text">Login here!</string>
 
+    <string name="text_enter_email_to_share">Enter a user email to share the task</string>
+    <string name="btn_share_task">share</string>
+
     <string name="tab1_private_task">Private tasks</string>
     <string name="tab2_shared_task">Shared tasks</string>
     <string name="description_task">What should you remember?</string>

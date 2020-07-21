@@ -79,7 +79,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-       // fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
         pageAdapter = new PageAdapter(getParentFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
