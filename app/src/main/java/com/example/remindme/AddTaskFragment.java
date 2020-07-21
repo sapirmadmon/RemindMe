@@ -352,7 +352,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
 
                 AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null)
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, timeMillis, pendingIntent);
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delta, pendingIntent);
             }
         }
     }
