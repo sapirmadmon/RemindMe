@@ -14,20 +14,29 @@ public class UserTask {
     private String mLocation;
    // private Priority mPriority;
    private String mPriority;
+   private Boolean mIsShared;
 
    public UserTask () {
    }
 
 
-    public UserTask(String mDescription, String mDate, String mTime, String mLocation, String mPriority) {
+    public UserTask(String mDescription, String mDate, String mTime, String mLocation, String mPriority, Boolean mIsShared) {
         this.mDescription = mDescription;
         this.mDate = mDate;
         this.mTime = mTime;
         this.mLocation = mLocation;
         this.mPriority = mPriority;
+        this.mIsShared = mIsShared;
     }
 
 
+    public void setmIsShared(Boolean mIsShared) {
+        this.mIsShared = mIsShared;
+    }
+
+    public Boolean getmIsShared() {
+        return mIsShared;
+    }
 
     public String getmDescription() {
         return mDescription;

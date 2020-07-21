@@ -35,6 +35,7 @@ public class RemindersFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
 
+    public static final String IS_SHARED_KEY = "IsSharedKey";
     private String TAG = "RegistrationActivity";
     private static final String USERS = "users";
 
@@ -59,6 +60,7 @@ public class RemindersFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
+        final Boolean isShared = getArguments().getBoolean(IS_SHARED_KEY);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
@@ -74,16 +76,24 @@ public class RemindersFragment extends Fragment {
         String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USERS).child(userKey).child("tasks");
+        userTasks = new ArrayList<UserTask>();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userTasks = new ArrayList<UserTask>();
+                ArrayList<UserTask> tasks = new ArrayList<>();
                 for(DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
 
                     UserTask ut = dataSnapshot1.getValue(UserTask.class);
-                    userTasks.add(ut);
+                    tasks.add(ut);
 
+                }
+
+                for (UserTask task:
+                     tasks) {
+                    if (task.getmIsShared() == isShared) {
+                        userTasks.add(task);
+                    }
                 }
 
                 // specify an adapter

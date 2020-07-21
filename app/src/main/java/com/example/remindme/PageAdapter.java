@@ -1,5 +1,7 @@
 package com.example.remindme;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,9 +28,17 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new RemindersFragment();
+                RemindersFragment privateTasks = new RemindersFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(RemindersFragment.IS_SHARED_KEY, false);
+                privateTasks.setArguments(args);
+                return privateTasks;
             case 1:
-                return new RemindersFragment();
+                RemindersFragment sharedTasks = new RemindersFragment();
+                Bundle args1 = new Bundle();
+                args1.putBoolean(RemindersFragment.IS_SHARED_KEY, true);
+                sharedTasks.setArguments(args1);
+                return sharedTasks;
             default:
                 return null;
         }

@@ -103,6 +103,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                         String key = mDatabase.child(uid).child("tasks").push().getKey();
 
                                         UserTask newTask = mUserTask.get(position);
+                                        newTask.setmIsShared(true);
 
                                         Map<String, Object> map = new HashMap<>();
                                         map.put(key, newTask);

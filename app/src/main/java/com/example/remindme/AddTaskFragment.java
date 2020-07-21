@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 
@@ -269,7 +270,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                 String date = tvDate.getText().toString();
                 String time = tvTimer.getText().toString();
 
-                newTask = new UserTask(description, date, time, location, priority); //create new task
+                newTask = new UserTask(description, date, time, location, priority, false); //create new task
                 setNewNotification();
 
                 String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -312,7 +313,7 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                     break;
             }
 
-            SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm aa");
             String dateStr = newTask.getmDate()+ " " + newTask.getmTime();
             Date date = null;
             try {
@@ -326,13 +327,14 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                 Intent intent = new Intent(this.getContext(), MainActivity.class);
                 PendingIntent activity = PendingIntent.getActivity(this.getContext(), notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                long timeMillis = calendar.getTimeInMillis();
-                if (timeMillis - System.currentTimeMillis() < 0)
-                    timeMillis = System.currentTimeMillis();
-                else {
-                    timeMillis = timeMillis - System.currentTimeMillis();
+                long delta = 0;
+                if (calendar.getTimeInMillis() - System.currentTimeMillis() < 0) {
+                    delta += 15;
                 }
+                else {
+                    delta = calendar.getTimeInMillis() - System.currentTimeMillis();
+                }
+
                 Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_date_range_black_24dp)
                         .setContentIntent(activity)
