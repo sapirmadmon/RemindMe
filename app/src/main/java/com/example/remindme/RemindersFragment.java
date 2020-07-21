@@ -81,6 +81,7 @@ public class RemindersFragment extends Fragment {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userTasks.clear();
                 ArrayList<UserTask> tasks = new ArrayList<>();
                 for(DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
 
