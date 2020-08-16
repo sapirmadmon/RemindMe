@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,7 +108,8 @@ public class RegistrationActivity extends AppCompatActivity {
         this.mConfirmPassword = findViewById(R.id.confirm_password_text_view);
         this.imageView = findViewById(R.id.image_view);
 
-        Button chooseImage = findViewById(R.id.choose_image);
+        //Button chooseImage = findViewById(R.id.choose_image);
+        ImageView chooseImage = findViewById(R.id.choose_image);
         chooseImage.setOnClickListener(getChoose_image_source());
 
         Button confirmButton = findViewById(R.id.registration_button);

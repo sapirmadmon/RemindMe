@@ -58,9 +58,9 @@
             android:background="@drawable/frame"
             android:hint="@string/description_task"
             android:importantForAutofill="no"
-            android:textAlignment="viewStart"
-            android:textColor="@color/secondaryTextColor"
-            android:textColorHint="@color/secondaryTextColorTrans" />
+            android:gravity="center"
+            android:textColor="@color/primaryTextColor"
+            android:textColorHint="#FFFFFF" />
 
     </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_marginRight="15dp"
                 android:drawableTop="@drawable/ic_date_range_black_24dp"
                 android:gravity="center"
-                android:text="@string/textView_chooseDate" />
+                android:hint="@string/textView_chooseDate" />
 
             <TextView
                 android:id="@+id/textViewChooseTime"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/ic_access_time_black_24dp"
                 android:gravity="center"
-                android:text="@string/textView_chooseTime" />
+                android:hint="@string/textView_chooseTime" />
 
         </LinearLayout>
 
@@ -158,14 +158,14 @@
         android:gravity="center">
 
         <Button
-        android:id="@+id/addTask_button"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/button_shape"
-        android:text="@string/btn_addTask"
-        android:textColor="@color/secondaryTextColor" />
+            android:id="@+id/addTask_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_shape_add_task"
+            android:text="@string/btn_addTask"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 

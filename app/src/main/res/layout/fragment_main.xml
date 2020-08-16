@@ -74,16 +74,17 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_add_task"
+            android:backgroundTint="#8BC34A"
             android:src="@drawable/ic_add_black_24dp"
             tools:ignore="MissingConstraints" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/button_add_task"
-            android:src="@drawable/ic_exit_to_app_black_24dp"
+            android:backgroundTint="#03ADC3"
+            android:src="@drawable/ic_baseline_exit_to_app_24"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
 

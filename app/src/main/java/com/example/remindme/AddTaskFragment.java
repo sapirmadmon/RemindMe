@@ -296,6 +296,8 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
 
                 if(btnAddTask.getText().equals("Update")) {
                     updateTaskDatabase();
+                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+
                 }
 
                 else {
@@ -304,18 +306,24 @@ public class AddTaskFragment extends Fragment  implements AdapterView.OnItemSele
                     date = tvDate.getText().toString();
                     time = tvTimer.getText().toString();
 
-                    newTask = new UserTask(description, date, time, location, priority, false); //create new task
-                    setNewNotification();
+                    if(description.isEmpty()) {
+                        Toast.makeText(getContext(), "The description must be added to the task", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        newTask = new UserTask(description, date, time, location, priority, false); //create new task
+                        setNewNotification();
 
-                    String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String key = mDatabase.child(userKey).child("tasks").push().getKey();
+                        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String key = mDatabase.child(userKey).child("tasks").push().getKey();
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put(key, newTask);
-                    mDatabase.child(userKey).child("tasks").updateChildren(map);
+                        Map<String, Object> map = new HashMap<>();
+                        map.put(key, newTask);
+                        mDatabase.child(userKey).child("tasks").updateChildren(map);
 
+                        getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+
+                    }
                 }
-                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
             }
         });
 

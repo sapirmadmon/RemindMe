@@ -32,6 +32,37 @@
             android:paddingBottom="10dp"
             android:textSize="40sp"
             android:textStyle="bold" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/profile_image_desc"
+                app:shapeAppearanceOverlay="@style/roundedImageView"
+                app:srcCompat="@drawable/profile" />
+
+            <ImageView
+                android:id="@+id/choose_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_gravity="bottom|right"/>
+            <!--            <Button-->
+            <!--                android:id="@+id/choose_image"-->
+            <!--                android:layout_width="80dp"-->
+            <!--                android:layout_height="30dp"-->
+            <!--                android:background="@drawable/button_shape"-->
+            <!--                android:text="@string/choose_image_button_text"/>-->
+        </FrameLayout>
 
         <EditText
             android:id="@+id/user_name_text_view"
@@ -89,38 +120,16 @@
             android:textColor="@color/secondaryTextColor"
             android:textColorHint="@color/secondaryTextColorTrans" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="center"
-            android:orientation="horizontal">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_view"
-                android:layout_width="89dp"
-                android:layout_height="89dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="@string/profile_image_desc"
-                app:shapeAppearanceOverlay="@style/roundedImageView"
-                app:srcCompat="@drawable/profile" />
-
-            <Button
-                android:id="@+id/choose_image"
-                android:layout_width="102dp"
-                android:layout_height="37dp"
-                android:background="@drawable/button_shape"
-                android:text="@string/choose_image_button_text" />
-        </LinearLayout>
 
         <Button
             android:id="@+id/registration_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_shape"
+            android:layout_marginTop="20dp"
             android:text="@string/confirm_registration_text"
-            android:textColor="@color/secondaryTextColor" />
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
     <LinearLayout
