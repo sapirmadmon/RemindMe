@@ -83,11 +83,27 @@
 
                 <ImageView
                     android:id="@+id/imageView_priority"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:visibility="gone"
-                    app:srcCompat="@drawable/ic_priority_high_black_24dp" />
+                    app:srcCompat="@drawable/high_priority" />
+
+                <ImageView
+                    android:id="@+id/imageView_low_priority"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/low_priority" />
+
+                <ImageView
+                    android:id="@+id/imageView_medium_priority"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/medium_priority" />
 
             </LinearLayout>
 

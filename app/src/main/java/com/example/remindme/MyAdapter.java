@@ -162,6 +162,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
        else holder.priorityImage.setVisibility(View.GONE);
 
+        if(mUserTask.get(position).getmPriority().equals("Medium")) {
+            holder.mediumPriorityImage.setVisibility(View.VISIBLE);
+        }
+        else holder.mediumPriorityImage.setVisibility(View.GONE);
+
+        if(mUserTask.get(position).getmPriority().equals("Low")) {
+            holder.lowPriorityImage.setVisibility(View.VISIBLE);
+        }
+        else holder.lowPriorityImage.setVisibility(View.GONE);
+
+
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View v) {
@@ -224,7 +235,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             //implements View.OnCreateContextMenuListener {
 
         TextView text1, text2, text3, text4;
-        ImageView priorityImage;
+        ImageView priorityImage, lowPriorityImage, mediumPriorityImage;
         CardView cardView;
 
 
@@ -237,6 +248,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             text4 = itemView.findViewById(R.id.textView_time);
 
             priorityImage = itemView.findViewById(R.id.imageView_priority);
+            mediumPriorityImage = itemView.findViewById(R.id.imageView_medium_priority);
+            lowPriorityImage = itemView.findViewById(R.id.imageView_low_priority);
+
             cardView = itemView.findViewById(R.id.cardViewTask);
           //  cardView.setOnCreateContextMenuListener(this);
 

@@ -54,4 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 notificationManager.createNotificationChannel(channel);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity(); // Close all activites
+        System.exit(0);  // Releasing resources
+    }
 }
