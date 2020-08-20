@@ -6,15 +6,19 @@ import androidx.fragment.app.FragmentManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private static final String CHANNEL_ID = "RemindMe";
+    public static final String INTENT_FILTER = "com.example.remindme";
     private FirebaseAuth mAuth;
 
     @Override
@@ -59,5 +63,25 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finishAffinity(); // Close all activites
         System.exit(0);  // Releasing resources
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
