@@ -121,6 +121,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
     private EditText et_location;
     private TextView tvDate;
     private TextView tvTimer;
+    private AutocompleteSupportFragment autocompleteFragment;
 
     private UserTask newTask;
 
@@ -289,31 +290,8 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
         chooseDate();
         chooseTime();
 
-        Bundle arg = getArguments();
-        if (arg != null) {
-
-            cDesc = getArguments().getString("mDescription");
-            cDate = getArguments().getString("mDate");
-            cTime = getArguments().getString("mTime");
-            cLocation = getArguments().getString("mLocation");
-            cPriority = getArguments().getString("mPriority");
-            cIfShared = getArguments().getBoolean("mIsShared");
-
-            //set this data to views
-            tvDate.setText(cDate);
-            tvTimer.setText(cTime);
-            et_description.setText(cDesc);
-            et_location.setText(cLocation);
-            int spinnerPosition = spinnerArrayAdapter.getPosition(cPriority);
-            spinnerPriority.setSelection(spinnerPosition);
-
-            btnAddTask.setText("Update");
-            tvTitle.setText("Edit Task");
-
-        }
-
         // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+        autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         if (autocompleteFragment != null) {
@@ -339,6 +317,30 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     Log.i(TAG, "An error occurred: " + status);
                 }
             });
+        }
+
+        Bundle arg = getArguments();
+        if (arg != null) {
+
+            cDesc = getArguments().getString("mDescription");
+            cDate = getArguments().getString("mDate");
+            cTime = getArguments().getString("mTime");
+            cLocation = getArguments().getString("mLocation");
+            cPriority = getArguments().getString("mPriority");
+            cIfShared = getArguments().getBoolean("mIsShared");
+
+            //set this data to views
+            tvDate.setText(cDate);
+            tvTimer.setText(cTime);
+            et_description.setText(cDesc);
+            autocompleteFragment.setText(cLocation);
+
+            int spinnerPosition = spinnerArrayAdapter.getPosition(cPriority);
+            spinnerPriority.setSelection(spinnerPosition);
+
+            btnAddTask.setText("Update");
+            tvTitle.setText("Edit Task");
+
         }
 
 
