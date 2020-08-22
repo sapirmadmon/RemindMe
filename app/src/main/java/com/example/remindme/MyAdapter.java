@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.security.PrivateKey;
@@ -61,9 +64,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row_task, parent, false);
-
-
-
 
         return new MyViewHolder(view);
     }
@@ -150,11 +150,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
        final String time = mUserTask.get(position).getmTime();
        final String priority = mUserTask.get(position).getmPriority();
        final Boolean ifShared = mUserTask.get(position).getmIsShared();
+       final Boolean isDone = mUserTask.get(position).getmIsDone();
 
        holder.text1.setText(desc);
        holder.text2.setText(date);
        holder.text3.setText(location);
        holder.text4.setText(time);
+       holder.checkboxIfDone.setChecked(isDone);
 
 
        if(mUserTask.get(position).getmPriority().equals("High")) {
@@ -172,6 +174,35 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
         else holder.lowPriorityImage.setVisibility(View.GONE);
 
+        holder.checkboxIfDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                String userId = null;
+                if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                    userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                if (userId != null) {
+                    final String finalUserId = userId;
+                    database = FirebaseDatabase.getInstance();
+                    mDatabase = database.getReference(USERS).child(finalUserId).child("tasks");
+                    Query applesQuery = mDatabase.orderByChild("mDescription").equalTo(desc);
+
+                    applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                ds.getRef().child("mIsDone").setValue(isChecked);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("MyAdapter", "onCancelled", databaseError.toException());
+                        }
+                    });
+                }
+            }
+        });
 
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -236,6 +267,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         TextView text1, text2, text3, text4;
         ImageView priorityImage, lowPriorityImage, mediumPriorityImage;
+        CheckBox checkboxIfDone;
         CardView cardView;
 
 
@@ -252,6 +284,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             lowPriorityImage = itemView.findViewById(R.id.imageView_low_priority);
 
             cardView = itemView.findViewById(R.id.cardViewTask);
+            checkboxIfDone = itemView.findViewById(R.id.checkboxIfDone);
           //  cardView.setOnCreateContextMenuListener(this);
 
         }

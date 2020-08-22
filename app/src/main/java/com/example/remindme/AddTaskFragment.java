@@ -72,8 +72,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.math.BigInteger;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -83,6 +85,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -248,7 +251,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                                     //init 12 hours time format
                                     SimpleDateFormat f12Hours = new SimpleDateFormat("hh:mm aa");
                                     //set selected time on textview
-                                    tvTimer.setText(f12Hours.format(date));
+                                    tvTimer.setText(f24Hours.format(date));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
@@ -362,7 +365,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     if (description.isEmpty()) {
                         Toast.makeText(getContext(), "The description must be added to the task", Toast.LENGTH_SHORT).show();
                     } else {
-                        newTask = new UserTask(description, date, time, location, priority, false); //create new task
+                        newTask = new UserTask(description, date, time, location, priority, false, false); //create new task
 
                         setNewNotification();
 
@@ -394,7 +397,6 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
 
     private void updateTaskDatabase() {
         description = (et_description).getText().toString();
-        location = (et_location).getText().toString();
         date = tvDate.getText().toString();
         time = tvTimer.getText().toString();
 
@@ -409,12 +411,17 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    ds.getRef().child("mDescription").setValue(description);
-                    ds.getRef().child("mDate").setValue(date);
-                    ds.getRef().child("mTime").setValue(time);
-                    ds.getRef().child("mLocation").setValue(location);
-                    ds.getRef().child("mPriority").setValue(priority);
-                    ds.getRef().child("mIsShared").setValue(cIfShared);
+                    if (ds.child("mDescription").getValue() != description && !description.equals(""))
+                        ds.getRef().child("mDescription").setValue(description);
+                    if (ds.child("mDate").getValue() != date && !date.equals(""))
+                        ds.getRef().child("mDate").setValue(date);
+                    if (ds.child("mTime").getValue() != time && !time.equals(""))
+                        ds.getRef().child("mTime").setValue(time);
+                    if (location != null)
+                        if (ds.child("mLocation").getValue() != location && !location.equals(""))
+                            ds.getRef().child("mLocation").setValue(location);
+                    if (ds.child("mPriority").getValue() != priority && !priority.equals(""))
+                        ds.getRef().child("mPriority").setValue(priority);
                 }
             }
 
@@ -466,10 +473,10 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getContext(), notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
                 if (isDateChecked){
-                    SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm aa");
-                    String dateStr = newTask.getmDate()+ " " + newTask.getmTime();
-                    Date date = null;
+                    SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    Date date = new Date();
                     try {
+                        String dateStr = newTask.getmDate()+ " " + newTask.getmTime();
                         date = f24Hours.parse(dateStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -485,7 +492,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     }
                     AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
                     if (alarmManager != null)
-                        alarmManager.set(AlarmManager.RTC, delta, pendingIntent);
+                        alarmManager .setRepeating(AlarmManager.RTC, delta, 86400*1000, pendingIntent);
                 }
 
                 if (isLocationChecked){
