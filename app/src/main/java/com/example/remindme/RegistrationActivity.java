@@ -121,7 +121,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String confirmPassword = mConfirmPassword.getText().toString();
                 String userName = mUsername.getText().toString();
 
-                if(email.isEmpty() || userName.isEmpty() || password.isEmpty()) {
+                if(email.isEmpty() || userName.isEmpty() || password.isEmpty() || pickedImgUrl == null) {
                     Toast.makeText(getApplicationContext(), "Please fill the form.", Toast.LENGTH_SHORT).show();
                 }
                 else {
