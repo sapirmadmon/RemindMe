@@ -1,5 +1,9 @@
 package com.example.remindme;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -86,6 +90,9 @@ public class RemindersFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
 
                     UserTask ut = dataSnapshot1.getValue(UserTask.class);
+                    if (ut.getmIsDone() == true) {
+                        stopAlarm(getContext(), ut.getmNotificationId());
+                    }
                     tasks.add(ut);
 
                 }
@@ -129,6 +136,14 @@ public class RemindersFragment extends Fragment {
         helper.attachToRecyclerView(recyclerView);
 
         return view;
+    }
+
+    public static void stopAlarm(Context context, int notificationId) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent notificationIntent = new Intent(context, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
     }
 
     private void removeItem(String desc) {

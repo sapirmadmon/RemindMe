@@ -454,6 +454,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
 
             if (getActivity() != null) {
                 int notificationId = Sequence.nextValue();
+                newTask.setmNotificationId(notificationId);
                 Intent intent = new Intent(this.getContext(), MainActivity.class);
                 PendingIntent activity = PendingIntent.getActivity(this.getContext(), notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -492,7 +493,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     }
                     AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
                     if (alarmManager != null)
-                        alarmManager .setRepeating(AlarmManager.RTC, delta, 86400*1000, pendingIntent);
+                        alarmManager.setRepeating(AlarmManager.RTC, delta, 86400*1000, pendingIntent);
                 }
 
                 if (isLocationChecked){

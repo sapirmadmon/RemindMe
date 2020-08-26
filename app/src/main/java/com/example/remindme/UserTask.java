@@ -13,9 +13,10 @@ public class UserTask {
     private String mTime;
     private String mLocation;
    // private Priority mPriority;
-   private String mPriority;
-   private Boolean mIsShared;
-   private Boolean mIsDone;
+    private String mPriority;
+    private Boolean mIsShared;
+    private Boolean mIsDone;
+    private int mNotificationId;
 
    public UserTask () {
    }
@@ -29,6 +30,14 @@ public class UserTask {
         this.mPriority = mPriority;
         this.mIsShared = mIsShared;
         this.mIsDone = mIsDone;
+    }
+
+    public void setmNotificationId(int mNotificationId) {
+        this.mNotificationId = mNotificationId;
+    }
+
+    public int getmNotificationId() {
+        return mNotificationId;
     }
 
     public void setmIsDone(Boolean mIsDone) {
