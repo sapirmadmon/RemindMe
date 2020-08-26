@@ -151,7 +151,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegistrationActivity.this, "Authentication failed.",
+                            Toast.makeText(RegistrationActivity.this, "Authentication failed.\nPassword contains at least 6 characters\n",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }

@@ -287,6 +287,8 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
 
         final Button btnAddTask = (Button) view.findViewById(R.id.addTask_button);
         TextView tvTitle = (TextView) view.findViewById(R.id.title_task);
+        Switch swDate = (Switch) view.findViewById(R.id.switchDate);
+        Switch swLocation = (Switch) view.findViewById(R.id.switchLocation);
 
         spinner();
         switches(view);
@@ -322,41 +324,42 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
             });
         }
 
-        Bundle arg = getArguments();
-        if (arg != null) {
-
-            cDesc = getArguments().getString("mDescription");
-            cDate = getArguments().getString("mDate");
-            cTime = getArguments().getString("mTime");
-            cLocation = getArguments().getString("mLocation");
-            cPriority = getArguments().getString("mPriority");
-            cIfShared = getArguments().getBoolean("mIsShared");
-
-            //set this data to views
-            tvDate.setText(cDate);
-            tvTimer.setText(cTime);
-            et_description.setText(cDesc);
-            autocompleteFragment.setText(cLocation);
-
-            int spinnerPosition = spinnerArrayAdapter.getPosition(cPriority);
-            spinnerPriority.setSelection(spinnerPosition);
-
-            btnAddTask.setText("Update");
-            tvTitle.setText("Edit Task");
-
-        }
+//        Bundle arg = getArguments();
+//        if (arg != null) {
+//
+//            cDesc = getArguments().getString("mDescription");
+//            cDate = getArguments().getString("mDate");
+//            cTime = getArguments().getString("mTime");
+//            cLocation = getArguments().getString("mLocation");
+//            cPriority = getArguments().getString("mPriority");
+//            cIfShared = getArguments().getBoolean("mIsShared");
+//
+//            //set this data to views
+//            tvDate.setText(cDate);
+//            tvTimer.setText(cTime);
+//            et_description.setText(cDesc);
+//            autocompleteFragment.setText(cLocation);
+//
+//            int spinnerPosition = spinnerArrayAdapter.getPosition(cPriority);
+//            spinnerPriority.setSelection(spinnerPosition);
+//
+//            btnAddTask.setText("Update");
+//            tvTitle.setText("Edit Task");
+//            swDate.setVisibility(View.GONE);
+//            swLocation.setVisibility(View.GONE);
+//
+//        }
 
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tasks = new ArrayList<UserTask>();
 
-                if (btnAddTask.getText().equals("Update")) {
-                    updateTaskDatabase();
-                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
-
-                } else {
+//                if (btnAddTask.getText().equals("Update")) {
+//                    updateTaskDatabase();
+//                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+//
+//                } else {
                     description = (et_description).getText().toString();
                     //location = (et_location).getText().toString();
                     date = tvDate.getText().toString();
@@ -379,7 +382,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                         getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
 
                     }
-                }
+ //               }
             }
         });
 
@@ -395,43 +398,7 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
 
-    private void updateTaskDatabase() {
-        description = (et_description).getText().toString();
-        date = tvDate.getText().toString();
-        time = tvTimer.getText().toString();
 
-        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference(USERS).child(userKey).child("tasks");
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query applesQuery = mDatabase.orderByChild("mDescription").equalTo(cDesc);
-
-        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                    if (ds.child("mDescription").getValue() != description && !description.equals(""))
-                        ds.getRef().child("mDescription").setValue(description);
-                    if (ds.child("mDate").getValue() != date && !date.equals(""))
-                        ds.getRef().child("mDate").setValue(date);
-                    if (ds.child("mTime").getValue() != time && !time.equals(""))
-                        ds.getRef().child("mTime").setValue(time);
-                    if (location != null)
-                        if (ds.child("mLocation").getValue() != location && !location.equals(""))
-                            ds.getRef().child("mLocation").setValue(location);
-                    if (ds.child("mPriority").getValue() != priority && !priority.equals(""))
-                        ds.getRef().child("mPriority").setValue(priority);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
-            }
-        });
-
-    }
 
     private final int REQUEST_PERMISSION_LOCATION=1;
     private void setNewNotification() {
@@ -513,13 +480,6 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         priority = parent.getItemAtPosition(position).toString();
-
-//        if(priority.equals(Priority.HIGH.name()))
-//            priorityEnum = Priority.HIGH;
-//        else if(priority.equals(Priority.MEDIUM.name()))
-//            priorityEnum = Priority.MEDIUM;
-//        else if(priority.equals(Priority.LOW.name()))
-//            priorityEnum = Priority.LOW;
 
         Log.d("PRIORITY_SPINNER" , priority);
     }

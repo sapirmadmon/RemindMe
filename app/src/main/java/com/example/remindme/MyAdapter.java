@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,9 +56,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private Context context;
     private Dialog dialog;
 
+    private Dialog dialogEdit;
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
     private static final String USERS = "users";
+
+
+
 
     public MyAdapter(ArrayList<UserTask> mUserTask, Context context) {
         this.mUserTask = mUserTask;
@@ -139,7 +147,89 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
 
+    public void showDialog_editTask (final int position, final String description, String spinner) {
 
+        final String priority;
+        dialogEdit = new Dialog(context);
+        dialogEdit.setContentView(R.layout.dialog_edit_task);
+
+        Button btn_positive = (Button) dialogEdit.findViewById(R.id.dialog_update_btn);
+        Button btn_negative = (Button) dialogEdit.findViewById(R.id.dialog_cancel1_btn);
+        final EditText et_description = (EditText) dialogEdit.findViewById(R.id.desc_task_textView);
+        final Spinner spinnerPriority = (Spinner) dialogEdit.findViewById(R.id.priority_spinner);
+
+        et_description.setText(description);
+
+        if(spinner.equals("High")) {
+            spinnerPriority.setSelection(1);
+            priority = "High";
+        }
+        else  if(spinner.equals("Medium")) {
+            spinnerPriority.setSelection(2);
+            priority = "Medium";
+        }
+        else if(spinner.equals("Low")) {
+            spinnerPriority.setSelection(3);
+            priority = "Low";
+        }
+        else {
+            spinnerPriority.setSelection(0);
+            priority = "";
+        }
+
+
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String p = spinnerPriority.getSelectedItem().toString();
+
+                updateTaskDatabase(et_description, p, description);
+                dialogEdit.cancel();
+            }
+        });
+
+        // Set negative/no button click listener
+        btn_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogEdit.dismiss();
+                Log.d("CANCEL", "cancel dialog box");
+            }
+        });
+
+        dialogEdit.show();
+    }
+
+
+
+    public void updateTaskDatabase(EditText et_description, final String priority, String cDesc) {
+        final String description = (et_description).getText().toString();
+
+        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference(USERS).child(userKey).child("tasks");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = mDatabase.orderByChild("mDescription").equalTo(cDesc);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    if (ds.child("mDescription").getValue() != description && !description.equals(""))
+                        ds.getRef().child("mDescription").setValue(description);
+
+                    if (ds.child("mPriority").getValue() != priority && !priority.equals(""))
+                        ds.getRef().child("mPriority").setValue(priority);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("onCancelled", "*****");
+            }
+        });
+    }
 
     //Replace the contents of a view (invoked by the layout manager)
     @Override
@@ -227,20 +317,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                             case R.id.menuEdit:
                                 Log.d("UPDATE", "click on update");
 
-                                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                                Fragment fragmentAddTask = new AddTaskFragment();
-
-                                Bundle args = new Bundle();
-                                args.putString("mDescription", desc);
-                                args.putString("mDate", date);
-                                args.putString("mLocation", location);
-                                args.putString("mPriority", priority);
-                                args.putString("mTime", time);
-                                args.putBoolean("mIsShared", ifShared);
-                                fragmentAddTask.setArguments(args);
-
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container2, fragmentAddTask).addToBackStack(null).commit();
-
+                                showDialog_editTask(position, desc, priority);
+//                                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                                Fragment fragmentAddTask = new AddTaskFragment();
+//
+//                                Bundle args = new Bundle();
+//                                args.putString("mDescription", desc);
+//                                args.putString("mDate", date);
+//                                args.putString("mLocation", location);
+//                                args.putString("mPriority", priority);
+//                                args.putString("mTime", time);
+//                                args.putBoolean("mIsShared", ifShared);
+//                                fragmentAddTask.setArguments(args);
+//
+//                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container2, fragmentAddTask).addToBackStack(null).commit();
                                 break;
                         }
                         return false;

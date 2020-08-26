@@ -1,5 +1,7 @@
 package com.example.remindme;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,10 +13,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -50,9 +56,14 @@ public class MainFragment extends Fragment {
     ShapeableImageView mImageView;
    // private FloatingActionButton fab;
 
+
+
+
     public MainFragment() {
         // Required empty public constructor
     }
+
+
 
 
     @Override

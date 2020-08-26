@@ -29,6 +29,7 @@
 
     <string name="text_enter_email_to_share">Enter a user email to share the task</string>
     <string name="btn_share_task">share</string>
+    <string name="btn_update_task">Update</string>
 
     <string name="tab1_private_task">Private tasks</string>
     <string name="tab2_shared_task">Shared tasks</string>
@@ -44,8 +45,10 @@
     <string name="RemindMeChannelName">RemindMeNotifications</string>
     <string name="channel_description">Remind me local notifications</string>
 
+    <string name="title_edit_task">Edit Task</string>
 
     <string-array name="priority_spinner">
+        <item>Choose Priority</item>
         <item>High</item>
         <item>Medium</item>
         <item>Low</item>
