@@ -128,6 +128,9 @@ public class RemindersFragment extends Fragment {
                 int position = viewHolder.getAdapterPosition();
                 UserTask taskToRemove = userTasks.get(position);
                 removeItem(taskToRemove.getmDescription());
+                if (getContext() != null){
+                    stopAlarm(getContext(), taskToRemove.getmNotificationId());
+                }
                 userTasks.remove(position);
                 mAdapter.notifyDataSetChanged();
             }
