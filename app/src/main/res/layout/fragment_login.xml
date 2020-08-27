@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="casual"
             android:textStyle="bold"
-            android:textSize="40sp"/>
+            android:textSize="45sp"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"

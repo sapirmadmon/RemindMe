@@ -12,6 +12,7 @@
         android:gravity="center"
         android:text="@string/title_edit_task"
         android:padding="5dp"
+        android:layout_marginBottom="15dp"
         android:textSize="25dp"
         />
 
@@ -33,7 +34,7 @@
         android:layout_width="400dp"
         android:layout_height="45dp"
         android:layout_below="@id/desc_task_textView"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:entries="@array/priority_spinner" />
 
