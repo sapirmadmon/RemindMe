@@ -91,6 +91,8 @@ import java.util.Objects;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -360,29 +362,32 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
 //                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
 //
 //                } else {
-                    description = (et_description).getText().toString();
-                    //location = (et_location).getText().toString();
-                    date = tvDate.getText().toString();
-                    time = tvTimer.getText().toString();
+                description = (et_description).getText().toString();
+                //location = (et_location).getText().toString();
+                date = tvDate.getText().toString();
+                time = tvTimer.getText().toString();
 
-                    if (description.isEmpty()) {
-                        Toast.makeText(getContext(), "The description must be added to the task", Toast.LENGTH_SHORT).show();
-                    } else {
-                        newTask = new UserTask(description, date, time, location, priority, false, false); //create new task
+                if (description.isEmpty()) {
+                    Toast.makeText(getContext(), "The description must be added to the task", Toast.LENGTH_SHORT).show();
+                } else {
+                    newTask = new UserTask(description, date, time, location, priority, false, false); //create new task
 
-                        setNewNotification();
-
-                        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        String key = mDatabase.child(userKey).child("tasks").push().getKey();
-
-                        Map<String, Object> map = new HashMap<>();
-                        map.put(key, newTask);
-                        mDatabase.child(userKey).child("tasks").updateChildren(map);
-
-                        getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
-
+                    if (!setNewNotification()){
+                        Toast.makeText(getContext(), "Please allow location in order to get notified by location.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
- //               }
+
+                    String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String key = mDatabase.child(userKey).child("tasks").push().getKey();
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(key, newTask);
+                    mDatabase.child(userKey).child("tasks").updateChildren(map);
+
+                    getParentFragmentManager().beginTransaction().remove(AddTaskFragment.this).commit();
+
+                }
+                //               }
             }
         });
 
@@ -397,11 +402,9 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
         return view;
     }
 
+    private final int REQUEST_PERMISSION_LOCATION = 1;
 
-
-
-    private final int REQUEST_PERMISSION_LOCATION=1;
-    private void setNewNotification() {
+    private boolean setNewNotification() {
         if (newTask != null) {
             int prio = NotificationCompat.PRIORITY_DEFAULT;
 
@@ -416,7 +419,6 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     prio = NotificationCompat.PRIORITY_LOW;
                     break;
             }
-
 
 
             if (getActivity() != null) {
@@ -440,11 +442,11 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                 notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getContext(), notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                if (isDateChecked){
+                if (isDateChecked) {
                     SimpleDateFormat f24Hours = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     Date date = new Date();
                     try {
-                        String dateStr = newTask.getmDate()+ " " + newTask.getmTime();
+                        String dateStr = newTask.getmDate() + " " + newTask.getmTime();
                         date = f24Hours.parse(dateStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -454,27 +456,30 @@ public class AddTaskFragment extends Fragment implements AdapterView.OnItemSelec
                     long delta = 0;
                     if (calendar.getTimeInMillis() - System.currentTimeMillis() < 0) {
                         delta += System.currentTimeMillis() + 1500;
-                    }
-                    else {
+                    } else {
                         delta = System.currentTimeMillis() + (calendar.getTimeInMillis() - System.currentTimeMillis());
                     }
-                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                     if (alarmManager != null)
-                        alarmManager.setRepeating(AlarmManager.RTC, delta, 86400*1000, pendingIntent);
+                        alarmManager.setRepeating(AlarmManager.RTC, delta, 86400 * 1000, pendingIntent);
                 }
 
-                if (isLocationChecked){
+                if (isLocationChecked) {
                     LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                            ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, REQUEST_PERMISSION_LOCATION);
-                    }
-                    if (locationManager != null) {
-                        locationManager.addProximityAlert(latitude, longtitude, 1000, -1, pendingIntent);
+                    if (checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                            checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_LOCATION);
+                        return false;
+                    } else {
+                        if (locationManager != null) {
+                            locationManager.addProximityAlert(latitude, longtitude, 1000, -1, pendingIntent);
+                        }
                     }
                 }
+                return true;
             }
         }
+        return true;
     }
 
     @Override
